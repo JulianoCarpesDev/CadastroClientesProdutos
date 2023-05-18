@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="viewsControllers.MainController">
+   <content>
+      <AnchorPane prefHeight="689.0" prefWidth="991.0">
+         <children>
+            <ImageView fitHeight="123.0" fitWidth="149.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../Downloads/PLACA%20%20CARPES.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="278.0" layoutY="27.0" prefHeight="28.0" prefWidth="436.0" text="Carpes Sistemas Eletronicos de Segurança" textAlignment="CENTER" textFill="#0e2dda">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <VBox layoutX="10.0" layoutY="146.0" prefHeight="507.0" prefWidth="971.0">
+               <children>
+                  <MenuBar prefHeight="26.0" prefWidth="971.0">
+                    <menus>
+                      <Menu mnemonicParsing="false" text="ORÇAMENTO">
+                        <items>
+                          <MenuItem fx:id="novo" mnemonicParsing="false" onAction="#novoOrcamento" text="NOVO" />
+                              <MenuItem fx:id="sair" mnemonicParsing="false" onAction="#sairPrograma" text="VOLTAR" />
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="HELP">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="MANUAL" />
+                        </items>
+                      </Menu>
+                    </menus>
+                  </MenuBar>
+               </children>
+            </VBox>
+            <Label layoutX="367.0" layoutY="63.0" text="CNPJ 25.425.988;0001-61" textAlignment="CENTER" textFill="#0e2dda">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </content>
+</ScrollPane>
