@@ -4,6 +4,7 @@ module budget {
 	
 	opens application to javafx.graphics, javafx.fxml;
 	opens viewsControllers to javafx.fxml;
+	opens model.entites to javafx.base;
 
 
 }

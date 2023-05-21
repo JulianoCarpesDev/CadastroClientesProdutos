@@ -3,6 +3,7 @@ package viewsControllers;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 import application.Main;
 import javafx.fxml.FXML;
@@ -14,6 +15,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
+import model.services.ProdutoService;
 import utils.Alerts;
 
 public class MainController implements Initializable{
@@ -28,24 +30,31 @@ public class MainController implements Initializable{
 	private MenuItem MenuAbout;
 
 	
+	
+	
 	public void novoOrcamento() {
 		Alerts.showAlerts("Msg", "ola", null, AlertType.INFORMATION);
 		System.out.println("novo orçamento");
 	}
 	
 	public void aboutAction() {
-		carregaViewAbout("/viewsControllers/Ajuda.fxml");
+		carregaViewAbout("/viewsControllers/Ajuda.fxml", x-> {});
+		
 	}
 	public void cadatroProdutos() {
-		carregaViewAbout("/viewsControllers/ListaDeProdutos.fxml");
+		carregaViewAbout("/viewsControllers/ListaDeProdutos.fxml",(ControllerListaProdutos controle)->{
+			controle.setProdutosService(new ProdutoService());
+			controle.atualizaTableView();
+		});
 	}
+
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 		
 	}
-	private synchronized void carregaViewAbout(String nomeTela) {
+	private synchronized <T>void carregaViewAbout(String nomeTela, Consumer<T> iniciaAcao) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(nomeTela));
 	
 		try {
@@ -59,6 +68,11 @@ public class MainController implements Initializable{
 			cenaPrincipal.getChildren().clear();
 			cenaPrincipal.getChildren().add(menuTelaPrincipal);
 			cenaPrincipal.getChildren().addAll(novoVbox.getChildren());
+			
+			T controle = loader.getController();
+			iniciaAcao.accept(controle);
+			
+			
 		} catch (IOException e) {
 			Alerts.showAlerts("Erro", "Tela About", e.getMessage(), AlertType.ERROR);
 			e.printStackTrace();

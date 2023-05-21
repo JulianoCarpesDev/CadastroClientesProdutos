@@ -6,7 +6,7 @@ public class Produtos  {
 
 	
 	private Integer id;
-	private String nome;
+	private String name;
 	private Double preco;
 	
 	
@@ -15,10 +15,10 @@ public class Produtos  {
 	}
 
 
-	public Produtos(Integer id, String nome, Double preco) {
+	public Produtos(Integer id, String name, Double preco) {
 		super();
 		this.id = id;
-		this.nome = nome;
+		this.name = name;
 		this.preco = preco;
 	}
 
@@ -34,12 +34,12 @@ public class Produtos  {
 
 
 	public String getName() {
-		return nome;
+		return name;
 	}
 
 
-	public void setName(String nome) {
-		this.nome = nome;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 
@@ -74,7 +74,7 @@ public class Produtos  {
 
 	@Override
 	public String toString() {
-		return "Produtos [id=" + id + ", nome=" + nome + ", preco=" + preco + "]";
+		return "Produtos [id=" + id + ", name=" + name + ", preco=" + preco + "]";
 	}
 	
 	
