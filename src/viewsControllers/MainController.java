@@ -22,6 +22,9 @@ public class MainController implements Initializable{
 	private MenuItem MenuOrçamento;
 	
 	@FXML
+	private MenuItem cadatroProduto; 
+	
+	@FXML
 	private MenuItem MenuAbout;
 
 	
@@ -33,13 +36,16 @@ public class MainController implements Initializable{
 	public void aboutAction() {
 		carregaViewAbout("/viewsControllers/Ajuda.fxml");
 	}
+	public void cadatroProdutos() {
+		carregaViewAbout("/viewsControllers/ListaDeProdutos.fxml");
+	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 		
 	}
-	private void carregaViewAbout(String nomeTela) {
+	private synchronized void carregaViewAbout(String nomeTela) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(nomeTela));
 	
 		try {
