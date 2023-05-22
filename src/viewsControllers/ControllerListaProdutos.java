@@ -32,6 +32,8 @@ public class ControllerListaProdutos implements Initializable{
 	
 	@FXML
 	private TableColumn<Produtos, Double> tableCollumnPreco;
+	@FXML
+	private TableColumn<Produtos, Double> tableCollumnDescricao;
 	
 	@FXML
 	private Button btnNovo;
@@ -53,9 +55,10 @@ public class ControllerListaProdutos implements Initializable{
 	
 	private void iniciaNo() {
 		tableCollumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
-		tableCollumnName.setCellValueFactory(new PropertyValueFactory<>("name"));		
+		tableCollumnName.setCellValueFactory(new PropertyValueFactory<>("nome"));		
 		tableCollumnPreco.setCellValueFactory(new PropertyValueFactory<>("preco"));	
-		
+		tableCollumnDescricao.setCellValueFactory(new PropertyValueFactory<>("descricao"));	
+
 		Stage palco =(Stage)Main.getMainScene().getWindow();
 		
 		tableViewProdutos.prefHeightProperty().bind(palco.heightProperty());

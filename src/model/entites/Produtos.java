@@ -1,13 +1,16 @@
 package model.entites;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Produtos  {
+public class Produtos implements Serializable {
 
 	
+	private static final long serialVersionUID = 1L;
 	private Integer id;
-	private String name;
+	private String nome;
 	private Double preco;
+	private String descricao;
 	
 	
 	public Produtos() {
@@ -15,11 +18,12 @@ public class Produtos  {
 	}
 
 
-	public Produtos(Integer id, String name, Double preco) {
+	public Produtos(Integer id, String nome, Double preco, String descricao) {
 		super();
 		this.id = id;
-		this.name = name;
+		this.nome = nome;
 		this.preco = preco;
+		this.descricao = descricao;
 	}
 
 
@@ -33,13 +37,13 @@ public class Produtos  {
 	}
 
 
-	public String getName() {
-		return name;
+	public String getNome() {
+		return nome;
 	}
 
 
-	public void setName(String name) {
-		this.name = name;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 
@@ -50,6 +54,16 @@ public class Produtos  {
 
 	public void setPreco(Double preco) {
 		this.preco = preco;
+	}
+
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
 
@@ -74,10 +88,10 @@ public class Produtos  {
 
 	@Override
 	public String toString() {
-		return "Produtos [id=" + id + ", name=" + name + ", preco=" + preco + "]";
+		return "Produtos [id=" + id + ", nome=" + nome + ", preco=" + preco + ", descricao=" + descricao + "]";
 	}
-	
-	
+
+
 	
 
 }
