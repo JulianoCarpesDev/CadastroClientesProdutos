@@ -1,22 +1,30 @@
 package viewsControllers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import java.util.Observable;
 import java.util.ResourceBundle;
 
 import application.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entites.Produtos;
 import model.services.ProdutoService;
+import utils.Alerts;
+import utils.Utils;
 
 public class ControllerListaProdutos implements Initializable{
 	
@@ -41,8 +49,9 @@ public class ControllerListaProdutos implements Initializable{
 	private ObservableList<Produtos> obsList;
 	
 	@FXML
-	public void onBtNovo() {
-		System.out.println("apertei");
+	public void onBtNovo(ActionEvent evento) {
+		Stage pai = Utils.palcoAtual(evento);
+		criaDialogoForm("/viewsControllers/FormularioProdutos.fxml",pai);
 	}
 	
 	public void setProdutosService(ProdutoService service) {
@@ -71,6 +80,23 @@ public class ControllerListaProdutos implements Initializable{
 		List<Produtos>list  = service.buscarTodos();
 		obsList = FXCollections.observableArrayList(list);
 		tableViewProdutos.setItems(obsList);
+	}
+	
+	private void criaDialogoForm(String caminho,Stage palco) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(caminho));
+			Pane novaTela = loader.load();
+			
+			Stage novoPalco = new Stage();
+			novoPalco.setTitle("Entre com os dados do Produto");
+			novoPalco.setScene(new Scene(novaTela));
+			novoPalco.setResizable(false);
+			novoPalco.initOwner(palco);
+			novoPalco.initModality(Modality.WINDOW_MODAL);
+			novoPalco.showAndWait();
+		} catch (IOException e) {
+			Alerts.showAlerts("IO Exception", "Erro ao carregar tela", e.getMessage(), AlertType.ERROR);
+		}
 	}
 
 }
