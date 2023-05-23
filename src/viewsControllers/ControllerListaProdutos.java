@@ -50,8 +50,9 @@ public class ControllerListaProdutos implements Initializable{
 	
 	@FXML
 	public void onBtNovo(ActionEvent evento) {
+		Produtos obj = new Produtos();
 		Stage pai = Utils.palcoAtual(evento);
-		criaDialogoForm("/viewsControllers/FormularioProdutos.fxml",pai);
+		criaDialogoForm(obj,"/viewsControllers/FormularioProdutos.fxml",pai);
 	}
 	
 	public void setProdutosService(ProdutoService service) {
@@ -82,10 +83,16 @@ public class ControllerListaProdutos implements Initializable{
 		tableViewProdutos.setItems(obsList);
 	}
 	
-	private void criaDialogoForm(String caminho,Stage palco) {
+	private void criaDialogoForm(Produtos obj,String caminho,Stage palco) {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource(caminho));
 			Pane novaTela = loader.load();
+			
+			ControllerFormulario formControler = loader.getController();
+			
+			formControler.setProdutos(obj);
+			formControler.setService(new ProdutoService());
+			formControler.updateFormulario();
 			
 			Stage novoPalco = new Stage();
 			novoPalco.setTitle("Entre com os dados do Produto");

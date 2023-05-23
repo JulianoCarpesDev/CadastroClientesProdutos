@@ -87,11 +87,9 @@ public class ProdutosDaoJDBC implements ProdutosDao {
 		try {
 			st = conn.prepareStatement(
 				"INSERT INTO Produtos " +
-				"(Nome) " +
-				"(Preco) " +
-				"(Decricao) " +
+				"(Nome, Preco,Descricao) " +
 				"VALUES " +
-				"(?)", 
+				"(?,?,?)", 
 				Statement.RETURN_GENERATED_KEYS);
 
 			st.setString(1, obj.getNome());

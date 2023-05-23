@@ -2,6 +2,7 @@ package viewsControllers;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
@@ -19,7 +20,6 @@ import model.services.ProdutoService;
 import utils.Alerts;
 
 public class MainController implements Initializable{
-	
 	@FXML
 	private MenuItem MenuOrçamento;
 	

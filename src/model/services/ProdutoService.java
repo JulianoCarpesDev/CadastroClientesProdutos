@@ -15,4 +15,13 @@ public class ProdutoService {
 		return dao.findAll();
 		
 	}
+	
+	public void salvaAtualizarForm(Produtos obj) {
+		if(obj.getId() == null) {
+			dao.insert(obj);
+		}
+		else {
+			dao.update(obj);
+		}
+	}
 }
