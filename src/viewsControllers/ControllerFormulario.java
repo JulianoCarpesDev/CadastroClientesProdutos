@@ -4,7 +4,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import db.DbException;
 import javafx.event.ActionEvent;
@@ -15,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import model.entites.Produtos;
+import model.exception.ValidaException;
 import model.services.ProdutoService;
 import utils.Alerts;
 import utils.Constrains.Constraints;
@@ -89,12 +92,17 @@ public class ControllerFormulario implements Initializable{
 			service.salvaAtualizarForm(entidade);
 			nofiticaListener();
 			Utils.palcoAtual(evento).close();
-		} catch (DbException e) {
+		} 
+		catch (ValidaException e) {
+			SetaErros(e.pegaErros());
+		}
+		catch (DbException e) {
 			Alerts.showAlerts("Erro ao salvar", null, e.getMessage(), AlertType.ERROR);
 		}
 	
 		
 	}
+	
 	
 	private void nofiticaListener() {
 		for (DataChangeListener data : listener) {
@@ -105,12 +113,29 @@ public class ControllerFormulario implements Initializable{
 	}
 
 	private Produtos getDadosForm() {
+	
 		Locale.setDefault(Locale.US);
 		Produtos obj = new Produtos();
+		ValidaException exception = new ValidaException("Erro no campo");
+		
 		obj.setId(Utils.converteParaString(txtId.getText()));
+		if(txtNome.getText()== null || txtNome.getText().trim().equals("")) {
+			exception.adicionaErros("Name","Campo não pode ser vazio" );
+		}
 		obj.setNome(txtNome.getText());
+		
+		if(txtPreco.getText() == ""  ) {
+			exception.adicionaErros("Preco", "Campo não pode estar vazio");
+		}
 		obj.setPreco(Utils.converteParaDouble(txtPreco.getText()));
+		
+		if(txtDecricao.getText() == null) {
+			exception.adicionaErros("Descricao", "Campo não pode estar vazio");
+		}
 		obj.setDescricao(txtDecricao.getText());
+		if(exception.pegaErros().size()>0) {
+			throw exception;
+		}
 		return obj;
 	}
 
@@ -140,10 +165,17 @@ public class ControllerFormulario implements Initializable{
 		txtNome.setText(entidade.getNome());
 		txtPreco.setText(String.format("%.2f", entidade.getPreco()));
 		txtDecricao.setText(entidade.getDescricao());
-	}
-
-
-
+	}	
 	
+	private void SetaErros(Map<String, String> erros) {
+		Set<String> campos = erros.keySet();
+		
+		if (campos.contains("Name")){
+			labelErroNome.setText(erros.get("Name"));
+			labelErroPreco.setText(erros.get("Preco"));
+			labelErroDecricao.setText(erros.get("Descricao"));
+			
+		}
+	}
 
 }
