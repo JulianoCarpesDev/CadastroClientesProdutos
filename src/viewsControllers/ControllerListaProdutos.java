@@ -26,7 +26,7 @@ import model.services.ProdutoService;
 import utils.Alerts;
 import utils.Utils;
 
-public class ControllerListaProdutos implements Initializable{
+public class ControllerListaProdutos implements Initializable,DataChangeListener{
 	
 	private ProdutoService service;
 	@FXML
@@ -47,6 +47,7 @@ public class ControllerListaProdutos implements Initializable{
 	private Button btnNovo;
 	
 	private ObservableList<Produtos> obsList;
+	
 	
 	@FXML
 	public void onBtNovo(ActionEvent evento) {
@@ -92,6 +93,7 @@ public class ControllerListaProdutos implements Initializable{
 			
 			formControler.setProdutos(obj);
 			formControler.setService(new ProdutoService());
+			formControler.sobrescreveDataChangeList(this);
 			formControler.updateFormulario();
 			
 			Stage novoPalco = new Stage();
@@ -104,6 +106,12 @@ public class ControllerListaProdutos implements Initializable{
 		} catch (IOException e) {
 			Alerts.showAlerts("IO Exception", "Erro ao carregar tela", e.getMessage(), AlertType.ERROR);
 		}
+	}
+
+	@Override
+	public void onDataChanged() {
+		atualizaTableView();
+		
 	}
 
 }

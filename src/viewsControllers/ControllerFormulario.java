@@ -1,6 +1,8 @@
 package viewsControllers;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -48,8 +50,10 @@ public class ControllerFormulario implements Initializable{
 	private Button btnCancelar;
 	
 	private Produtos entidade;
+	
 	private ProdutoService service;
 	
+	private List<DataChangeListener> listener = new ArrayList<>();
 
 	public ProdutoService getService() {
 		return service;
@@ -66,6 +70,10 @@ public class ControllerFormulario implements Initializable{
 	public void setProdutos(Produtos entidade) {
 		this.entidade = entidade;
 	}
+	
+	public void sobrescreveDataChangeList(DataChangeListener data) {
+		listener.add(data);
+	}
 	@FXML
 	public void btnSalva(ActionEvent evento) {
 		if(entidade == null) {
@@ -79,6 +87,7 @@ public class ControllerFormulario implements Initializable{
 		try {
 			entidade = getDadosForm();
 			service.salvaAtualizarForm(entidade);
+			nofiticaListener();
 			Utils.palcoAtual(evento).close();
 		} catch (DbException e) {
 			Alerts.showAlerts("Erro ao salvar", null, e.getMessage(), AlertType.ERROR);
@@ -87,6 +96,14 @@ public class ControllerFormulario implements Initializable{
 		
 	}
 	
+	private void nofiticaListener() {
+		for (DataChangeListener data : listener) {
+			data.onDataChanged();
+			
+		}
+		
+	}
+
 	private Produtos getDadosForm() {
 		Locale.setDefault(Locale.US);
 		Produtos obj = new Produtos();
@@ -124,6 +141,8 @@ public class ControllerFormulario implements Initializable{
 		txtPreco.setText(String.format("%.2f", entidade.getPreco()));
 		txtDecricao.setText(entidade.getDescricao());
 	}
+
+
 
 	
 
