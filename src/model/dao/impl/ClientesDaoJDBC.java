@@ -14,7 +14,6 @@ import db.DB;
 import db.DbException;
 import model.dao.ClientesDao;
 import model.entites.Clientes;
-import model.entites.Produtos;
 
 public class ClientesDaoJDBC implements ClientesDao {
 
@@ -29,17 +28,15 @@ public class ClientesDaoJDBC implements ClientesDao {
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement(
-					"INSERT INTO clientes "
-					+ "(Nome, Endereco, Telefone,ProdutosId) "
+					"INSERT INTO Clientes "
+					+ "(Nome, Endereco, Telefone) "
 					+ "VALUES "
-					+ "(?, ?, ?, ?)",
+					+ "(?, ?, ?)",
 					Statement.RETURN_GENERATED_KEYS);
 			
 			st.setString(1, obj.getNome());
 			st.setString(2, obj.getEndereco());
 			st.setString(3, obj.getTelefone());
-			
-			st.setInt(4, obj.getProdutos().getId());
 			
 			int rowsAffected = st.executeUpdate();
 			
@@ -68,15 +65,14 @@ public class ClientesDaoJDBC implements ClientesDao {
 		PreparedStatement st = null;
 		try {
 			st = conn.prepareStatement(
-					"UPDATE clientes "
-					+ "SET Nome= ?, Endereco = ?, Telefone = ?, ProdutosId = ? "
+					"UPDATE Clientes "
+					+ "SET Nome= ?, Endereco = ?, Telefone = ? "
 					+ "WHERE Id = ?");
 			
 			st.setString(1, obj.getNome());
 			st.setString(2, obj.getEndereco());
-			st.setString(3, obj.getTelefone());
-			st.setInt(4, obj.getProdutos().getId());
-			st.setInt(5, obj.getId());
+			st.setString(3, obj.getTelefone());;
+			st.setInt(4, obj.getId());
 			
 			st.executeUpdate();
 		}
@@ -92,7 +88,7 @@ public class ClientesDaoJDBC implements ClientesDao {
 	public void deleteById(Integer id) {
 		PreparedStatement st = null;
 		try {
-			st = conn.prepareStatement("DELETE FROM clientes WHERE Id = ?");
+			st = conn.prepareStatement("DELETE FROM Clientes WHERE Id = ?");
 			
 			st.setInt(1, id);
 			
@@ -112,16 +108,12 @@ public class ClientesDaoJDBC implements ClientesDao {
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT clientes.*,produtos.Nome"
-					+ "FROM clientes INNER JOIN produtos "
-					+ "ON clientes.ProdutosId = produtos.Id "
-					+ "WHERE clientes.Id = ?");
+					"SELECT * FROM Clientes WHERE id = ?");
 			
 			st.setInt(1, id);
 			rs = st.executeQuery();
 			if (rs.next()) {
-				Produtos dep = instantiateProdutos(rs);
-				Clientes obj = instantiateClientes(rs, dep);
+				Clientes obj = instantiateClientes(rs);
 				return obj;
 			}
 			return null;
@@ -135,23 +127,13 @@ public class ClientesDaoJDBC implements ClientesDao {
 		}
 	}
 
-	private Clientes instantiateClientes(ResultSet rs, Produtos dep) throws SQLException {
+	private Clientes instantiateClientes(ResultSet rs) throws SQLException {
 		Clientes obj = new Clientes();
 		obj.setId(rs.getInt("Id"));
 		obj.setNome(rs.getString("Nome"));
 		obj.setEndereco(rs.getString("Endereco"));
-		obj.setTelefone(rs.getString("telefone"));
-		obj.setProdutos(dep);
+		obj.setTelefone(rs.getString("Telefone"));
 		return obj;
-	}
-
-	private Produtos instantiateProdutos(ResultSet rs) throws SQLException {
-		Produtos prod = new Produtos();
-		prod.setId(rs.getInt("ProdutosId"));
-		prod.setNome(rs.getString("Nome"));
-		prod.setPreco(rs.getDouble("Preco"));
-		prod.setDescricao(rs.getString("Descricao"));
-		return prod;
 	}
 
 	@Override
@@ -160,26 +142,23 @@ public class ClientesDaoJDBC implements ClientesDao {
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT clientes.*,produtos.Nome"
-					+ "FROM clientes INNER JOIN produtos "
-					+ "ON clientes.ProdutosId = produtos.Id "
-					+ "ORDER BY Nome");
+					"SELECT * FROM Clientes ORDER BY Nome");
 			
 			rs = st.executeQuery();
 			
 			List<Clientes> list = new ArrayList<>();
-			Map<Integer, Produtos> map = new HashMap<>();
+			Map<Integer, Clientes> map = new HashMap<>();
 			
 			while (rs.next()) {
 				
-				Produtos dep = map.get(rs.getInt("ProdutosId"));
+				Clientes cli = map.get(rs.getInt("Id"));
 				
-				if (dep == null) {
-					dep = instantiateProdutos(rs);
-					map.put(rs.getInt("ProdutosId"), dep);
+				if (cli == null) {
+					cli = instantiateClientes(rs);
+					map.put(rs.getInt("Id"),cli);
 				}
 				
-				Clientes obj = instantiateClientes(rs, dep);
+				Clientes obj = instantiateClientes(rs);
 				list.add(obj);
 			}
 			return list;
@@ -194,34 +173,30 @@ public class ClientesDaoJDBC implements ClientesDao {
 	}
 
 	@Override
-	public List<Clientes> findByProdutos(Produtos produtos) {
+	public List<Clientes> findByClientes(Clientes cliente) {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT clientes.*,produtos.Nome"
-					+ "FROM clientes INNER JOIN produtos "
-					+ "ON clientes.ProdutosId = produtos.Id "
-					+ "WHERE ProdutosId = ? "
-					+ "ORDER BY Nome");
+					"SELECT * FROM Clientes ORDER BY Nome");
 			
-			st.setInt(1, produtos.getId());
+			st.setInt(1, cliente.getId());
 			
 			rs = st.executeQuery();
 			
 			List<Clientes> list = new ArrayList<>();
-			Map<Integer, Produtos> map = new HashMap<>();
+			Map<Integer, Clientes> map = new HashMap<>();
 			
 			while (rs.next()) {
 				
-				Produtos dep = map.get(rs.getInt("ProdutosId"));
+				Clientes cli = map.get(rs.getInt("Id"));
 				
-				if (dep == null) {
-					dep = instantiateProdutos(rs);
-					map.put(rs.getInt("ProdutosId"), dep);
+				if (cli == null) {
+					cli = instantiateClientes(rs);
+					map.put(rs.getInt("Id"), cli);
 				}
 				
-				Clientes obj = instantiateClientes(rs, dep);
+				Clientes obj = instantiateClientes(rs);
 				list.add(obj);
 			}
 			return list;
@@ -234,4 +209,6 @@ public class ClientesDaoJDBC implements ClientesDao {
 			DB.closeResultSet(rs);
 		}
 	}
+
+	
 }

@@ -16,6 +16,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
+import model.services.ClienteService;
 import model.services.ProdutoService;
 import utils.Alerts;
 
@@ -24,7 +25,10 @@ public class MainController implements Initializable{
 	private MenuItem MenuOrçamento;
 	
 	@FXML
-	private MenuItem cadatroProduto; 
+	private MenuItem cadastroProduto; 
+	
+	@FXML
+	private MenuItem cadastroCliente; 
 	
 	@FXML
 	private MenuItem MenuAbout;
@@ -41,9 +45,15 @@ public class MainController implements Initializable{
 		carregaViewAbout("/viewsControllers/Ajuda.fxml", x-> {});
 		
 	}
-	public void cadatroProdutos() {
+	public void cadastroProdutos() {
 		carregaViewAbout("/viewsControllers/ListaDeProdutos.fxml",(ControllerListaProdutos controle)->{
 			controle.setProdutosService(new ProdutoService());
+			controle.atualizaTableView();
+		});
+	}
+	public void cadastroClientes() {
+		carregaViewAbout("/viewsControllers/ListaDeClientes.fxml",(ControllerListaClientes controle)->{
+			controle.setClientesService(new ClienteService());
 			controle.atualizaTableView();
 		});
 	}

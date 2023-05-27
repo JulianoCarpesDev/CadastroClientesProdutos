@@ -123,14 +123,12 @@ public class ProdutosDaoJDBC implements ProdutosDao {
 		try {
 			st = conn.prepareStatement(
 				"UPDATE Produtos " +
-				"SET Nome = ? " +
-				"SET Preco = ? " +
-				"SET Descricao = ? " +
+				"SET Nome = ?  , Preco = ?,Descricao = ? " +
 				"WHERE Id = ?");
 
 			st.setString(1, obj.getNome());
 			st.setDouble(2, obj.getPreco());
-			st.setString(2, obj.getDescricao());
+			st.setString(3, obj.getDescricao());
 			st.setInt(4, obj.getId());
 			st.executeUpdate();
 		}

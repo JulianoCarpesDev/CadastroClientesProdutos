@@ -13,5 +13,5 @@ public interface ClientesDao {
 	void deleteById(Integer id);
 	Clientes findById(Integer id);
 	List<Clientes> findAll();
-	List<Clientes> findByProdutos(Produtos produto);
+	List<Clientes> findByClientes(Clientes cliente);
 }
